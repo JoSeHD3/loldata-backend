@@ -1,0 +1,20 @@
+import { Controller, Get, Param, Query } from '@nestjs/common';
+import { MatchService } from './match.service';
+
+@Controller('match')
+export class MatchController {
+    constructor(private readonly matchService: MatchService) {}
+
+    @Get(':puuid/matches')
+    getMatchList(
+        @Param('puuid') puuid: string,
+        @Query('count') count: number = 20,
+        @Query('queue') queue: number = 420 //420 - soloq, 440 - flexq
+    ) {
+        return this.matchService.getMatchList({
+            puuid: puuid,
+            count: count,
+            queue: queue,
+        });
+    }
+}

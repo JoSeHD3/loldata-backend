@@ -28,4 +28,32 @@ export class MatchService {
         );
         return data;
     }
+
+    async getMatch(matchId: string): Promise<object> {
+        const url = `${RIOT_API_ADDRESS}/lol/match/v5/matches/${matchId}`;
+
+        const { data } = await firstValueFrom(
+            this.httpService.get<object>(url, {
+                headers: {
+                    'X-Riot-Token': this.apiKey,
+                },
+            })
+        );
+
+        return data;
+    }
+
+    async getTimeline(matchId: string): Promise<object> {
+        const url = `${RIOT_API_ADDRESS}/lol/match/v5/matches/${matchId}/timeline`;
+
+        const { data } = await firstValueFrom(
+            this.httpService.get<object>(url, {
+                headers: {
+                    'X-Riot-Token': this.apiKey,
+                },
+            })
+        );
+
+        return data;
+    }
 }

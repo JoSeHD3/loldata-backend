@@ -17,4 +17,14 @@ export class MatchController {
             queue: queue,
         });
     }
+
+    @Get('id/:matchId')
+    getMatch(@Param('matchId') matchId: string) {
+        return this.matchService.getMatch(matchId);
+    }
+
+    @Get('id/:matchId/timeline')
+    getTimeline(@Param('matchId') matchId: string) {
+        return this.matchService.getTimeline(matchId);
+    }
 }

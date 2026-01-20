@@ -2,6 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { firstValueFrom } from 'rxjs';
 import { RIOT_API_ADDRESS } from 'src/consts';
+import { Match } from './interfaces/Match';
 
 @Injectable()
 export class MatchService {
@@ -29,11 +30,11 @@ export class MatchService {
         return data;
     }
 
-    async getMatch(matchId: string): Promise<object> {
+    async getMatch(matchId: string): Promise<Match> {
         const url = `${RIOT_API_ADDRESS}/lol/match/v5/matches/${matchId}`;
 
         const { data } = await firstValueFrom(
-            this.httpService.get<object>(url, {
+            this.httpService.get<Match>(url, {
                 headers: {
                     'X-Riot-Token': this.apiKey,
                 },
@@ -43,6 +44,7 @@ export class MatchService {
         return data;
     }
 
+    //TODO: FOR LATER DEVELOPMENT
     async getTimeline(matchId: string): Promise<object> {
         const url = `${RIOT_API_ADDRESS}/lol/match/v5/matches/${matchId}/timeline`;
 

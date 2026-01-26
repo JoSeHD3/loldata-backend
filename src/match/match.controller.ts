@@ -8,7 +8,7 @@ export class MatchController {
     @Get(':puuid/matches')
     getMatchList(
         @Param('puuid') puuid: string,
-        @Query('count') count: number = 20,
+        @Query('count') count: number = 10,
         @Query('queue') queue: number = 420 //420 - soloq, 440 - flexq
     ) {
         return this.matchService.getMatchList({

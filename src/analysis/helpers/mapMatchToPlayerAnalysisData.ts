@@ -1,4 +1,4 @@
-import { Match } from '../interfaces/Match';
+import { Match } from '../../match/interfaces/Match';
 import { PlayerAnalysisData } from '../interfaces/PlayerAnalysisData';
 
 export const mapMatchToPlayerAnalysisData = (

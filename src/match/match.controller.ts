@@ -1,5 +1,6 @@
 import { Controller, Get, Param, Query } from '@nestjs/common';
 import { MatchService } from './match.service';
+import { MatchType } from 'src/enums';
 
 @Controller('match')
 export class MatchController {
@@ -9,7 +10,7 @@ export class MatchController {
     getMatchList(
         @Param('puuid') puuid: string,
         @Query('count') count: number = 10,
-        @Query('queue') queue: number = 420 //420 - soloq, 440 - flexq
+        @Query('queue') queue: MatchType = MatchType.SOLO
     ) {
         return this.matchService.getMatchList({
             puuid: puuid,

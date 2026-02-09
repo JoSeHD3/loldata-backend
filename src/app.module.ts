@@ -7,10 +7,17 @@ import { MatchController } from './match/match.controller';
 import { MatchService } from './match/match.service';
 import { AnalysisController } from './analysis/analysis.controller';
 import { AnalysisService } from './analysis/analysis.service';
+import { AuthController } from './auth/auth.controller';
+import { AuthService } from './auth/auth.service';
 
 @Module({
     imports: [HttpModule, ConfigModule.forRoot()],
-    controllers: [PlayerController, MatchController, AnalysisController],
-    providers: [PlayerService, MatchService, AnalysisService],
+    controllers: [
+        PlayerController,
+        MatchController,
+        AnalysisController,
+        AuthController,
+    ],
+    providers: [PlayerService, MatchService, AnalysisService, AuthService],
 })
 export class AppModule {}

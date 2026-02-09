@@ -9,9 +9,10 @@ import { AnalysisController } from './analysis/analysis.controller';
 import { AnalysisService } from './analysis/analysis.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthService } from './auth/auth.service';
+import { UsersModule } from './users/users.module';
 
 @Module({
-    imports: [HttpModule, ConfigModule.forRoot()],
+    imports: [HttpModule, ConfigModule.forRoot(), UsersModule],
     controllers: [
         PlayerController,
         MatchController,

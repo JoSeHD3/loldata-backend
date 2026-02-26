@@ -1,12 +1,16 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
     private readonly saltRounds: number;
 
-    constructor(private readonly usersService: UsersService) {
+    constructor(
+        private readonly usersService: UsersService,
+        private jwtService: JwtService
+    ) {
         const salt = process.env.BCRYPT_SALT_ROUNDS;
 
         if (!salt)
@@ -33,8 +37,17 @@ export class AuthService {
             throw new BadRequestException('Invalid credentials');
         }
 
+        const payload = {
+            id: user._id,
+            email: user.email,
+            role: user.role,
+        };
+
+        const accessToken = this.jwtService.sign(payload);
+
         return {
             message: 'Login successful',
+            access_token: accessToken,
         };
     }
 

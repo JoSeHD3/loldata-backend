@@ -14,7 +14,7 @@ import { AuthModule } from './auth/auth.module';
 @Module({
     imports: [
         HttpModule,
-        ConfigModule.forRoot(),
+        ConfigModule.forRoot({ isGlobal: true }),
         AuthModule,
         UsersModule,
         MongooseModule.forRootAsync({

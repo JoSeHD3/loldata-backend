@@ -29,7 +29,6 @@ export const mapMatchToPlayerAnalysisData = (
         turretTakedowns,
         inhibitorTakedowns,
         totalDamageTaken,
-        killParticipation,
     } = player;
 
     const minutes = gameDuration / 60;
@@ -71,8 +70,13 @@ export const mapMatchToPlayerAnalysisData = (
     );
 
     const characteristicMapImpactScore = calculateNormalizedAverage(
-        [kda, killParticipation],
-        ['normalizedKDA', 'normalizedKillParticipation']
+        [kda],
+        ['normalizedKDA']
+    );
+
+    console.log(
+        'Characteristic map impact score: ',
+        characteristicMapImpactScore
     );
 
     return {

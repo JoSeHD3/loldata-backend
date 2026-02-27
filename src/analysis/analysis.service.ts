@@ -3,6 +3,7 @@ import { AnalysisResult } from './interfaces/AnalysisResult';
 import { PlayerService } from 'src/player/player.service';
 import { MatchService } from 'src/match/match.service';
 import { mapMatchToPlayerAnalysisData } from './helpers/mapMatchToPlayerAnalysisData';
+import { PlayerAnalysisData } from './interfaces/PlayerAnalysisData';
 
 @Injectable()
 export class AnalysisService {
@@ -27,25 +28,41 @@ export class AnalysisService {
             mapMatchToPlayerAnalysisData(match, puuid)
         );
 
+        const average = (
+            getter: (match: PlayerAnalysisData) => number
+        ): number => {
+            const sum = mappedMatches.reduce(
+                (acc, match) => acc + getter(match),
+                0
+            );
+            return sum / numberOfGames;
+        };
+
         return {
-            avgGoldPerMinute:
-                mappedMatches.reduce(
-                    (acc, match) => acc + match.goldPerMinute,
-                    0
-                ) / numberOfGames,
-            avgCsPerMinute:
-                mappedMatches.reduce(
-                    (acc, match) => acc + match.csPerMinute,
-                    0
-                ) / numberOfGames,
-            avgKda:
-                mappedMatches.reduce((acc, match) => acc + match.kda, 0) /
-                numberOfGames,
-            avgVisionScore:
-                mappedMatches.reduce(
-                    (acc, match) => acc + match.visionScore,
-                    0
-                ) / numberOfGames,
+            avgGoldPerMinute: average(m => m.goldPerMinute),
+            avgCsPerMinute: average(m => m.csPerMinute),
+            avgKda: average(m => m.kda),
+            avgVisionScore: average(m => m.visionScore),
+            characteristics: {
+                avgCharacteristicVisionScore: average(
+                    m => m.characteristics.characteristicVisionScore
+                ),
+                avgCharacteristicFarmingScore: average(
+                    m => m.characteristics.characteristicFarmingScore
+                ),
+                avgCharacteristicAggressionScore: average(
+                    m => m.characteristics.characteristicAggressionScore
+                ),
+                avgCharacteristicObjectivesScore: average(
+                    m => m.characteristics.characteristicObjectivesScore
+                ),
+                avgCharacteristicSurvivabilityScore: average(
+                    m => m.characteristics.characteristicSurvivabilityScore
+                ),
+                avgCharacteristicMapImpactScore: average(
+                    m => m.characteristics.characteristicMapImpactScore
+                ),
+            },
         };
     }
 

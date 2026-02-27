@@ -1,5 +1,6 @@
 import { Match } from '../../match/interfaces/Match';
 import { PlayerAnalysisData } from '../interfaces/PlayerAnalysisData';
+import { calculateNormalizedAverage } from './calculateNormalizedAverage';
 
 export const mapMatchToPlayerAnalysisData = (
     match: Match,
@@ -12,21 +13,89 @@ export const mapMatchToPlayerAnalysisData = (
     //TODO error handling
     if (!player) throw new Error('Player not found in a match');
 
-    const minutes = match.info.gameDuration / 60;
-    const cs = player.totalMinionsKilled + player.neutralMinionsKilled;
+    const { gameDuration } = match.info;
+    const {
+        totalMinionsKilled,
+        neutralMinionsKilled,
+        goldEarned,
+        visionScore,
+        wardsPlaced,
+        wardsKilled,
+        totalDamageDealtToChampions,
+        damageDealtToObjectives,
+        kills,
+        assists,
+        deaths,
+        turretTakedowns,
+        inhibitorTakedowns,
+        totalDamageTaken,
+        killParticipation,
+    } = player;
+
+    const minutes = gameDuration / 60;
+    const cs = totalMinionsKilled + neutralMinionsKilled;
+    const csPerMinute = cs / minutes;
+    const goldPerMinute = goldEarned / minutes;
+    const kda = (kills + assists) / deaths;
+    const objectivesTaken = turretTakedowns + inhibitorTakedowns;
+    const damageEfficiency = totalDamageTaken / totalDamageDealtToChampions;
+    const deathsPerMinute = deaths / minutes;
+
+    const characteristicVisionScore = calculateNormalizedAverage(
+        [visionScore, wardsPlaced, wardsKilled],
+        [
+            'normalizedVisionScore',
+            'normalizedWardsPlaced',
+            'normalizedWardsDestroyed',
+        ]
+    );
+
+    const characteristicFarmingScore = calculateNormalizedAverage(
+        [csPerMinute, goldPerMinute],
+        ['normalizedCsPerMinute', 'normalizedGoldPerMinute']
+    );
+
+    const characteristicAggressionScore = calculateNormalizedAverage(
+        [kda, totalDamageDealtToChampions],
+        ['normalizedKDA', 'normalizedDamageToChampions']
+    );
+
+    const characteristicObjectivesScore = calculateNormalizedAverage(
+        [damageDealtToObjectives, objectivesTaken],
+        ['normalizedDamageToObjectives', 'normalizedObjectivesTaken']
+    );
+
+    const characteristicSurvivabilityScore = calculateNormalizedAverage(
+        [damageEfficiency, deathsPerMinute],
+        ['normalizedDamageEfficiency', 'normalizedDeathsPerMinute']
+    );
+
+    const characteristicMapImpactScore = calculateNormalizedAverage(
+        [kda, killParticipation],
+        ['normalizedKDA', 'normalizedKillParticipation']
+    );
 
     return {
-        gameDuration: match.info.gameDuration,
+        gameDuration,
 
-        goldPerMinute: player.goldEarned / minutes,
-        csPerMinute: cs / minutes,
+        goldPerMinute,
+        csPerMinute,
 
-        kda: (player.kills + player.assists) / player.deaths,
-        damageToChampions: player.totalDamageDealtToChampions,
+        kda,
+        totalDamageDealtToChampions,
 
-        damageToObjectives: player.damageDealtToObjectives,
-        objectivesTaken: player.turretTakedowns + player.inhibitorTakedowns,
+        damageDealtToObjectives,
+        objectivesTaken,
 
-        visionScore: player.visionScore,
+        visionScore,
+
+        characteristics: {
+            characteristicVisionScore,
+            characteristicFarmingScore,
+            characteristicAggressionScore,
+            characteristicObjectivesScore,
+            characteristicSurvivabilityScore,
+            characteristicMapImpactScore,
+        },
     };
 };

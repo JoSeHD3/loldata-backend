@@ -11,6 +11,8 @@ export interface Participant {
 
     totalDamageDealtToChampions: number;
     damageDealtToObjectives: number;
+    totalDamageTaken: number;
+    killParticipation: number;
 
     turretTakedowns: number;
     inhibitorTakedowns: number;

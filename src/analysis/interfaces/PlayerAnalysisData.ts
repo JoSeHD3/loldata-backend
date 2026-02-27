@@ -5,10 +5,19 @@ export interface PlayerAnalysisData {
     csPerMinute: number;
 
     kda: number;
-    damageToChampions: number;
+    totalDamageDealtToChampions: number;
 
-    damageToObjectives: number;
+    damageDealtToObjectives: number;
     objectivesTaken: number;
 
     visionScore: number;
+
+    characteristics: {
+        characteristicVisionScore: number;
+        characteristicFarmingScore: number;
+        characteristicAggressionScore: number;
+        characteristicObjectivesScore: number;
+        characteristicSurvivabilityScore: number;
+        characteristicMapImpactScore: number;
+    };
 }

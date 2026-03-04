@@ -74,11 +74,6 @@ export const mapMatchToPlayerAnalysisData = (
         ['normalizedKDA']
     );
 
-    console.log(
-        'Characteristic map impact score: ',
-        characteristicMapImpactScore
-    );
-
     return {
         gameDuration,
 

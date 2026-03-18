@@ -8,7 +8,7 @@ import {
     JwtFromRequestFunction,
 } from 'passport-jwt';
 
-interface JwtPayload {
+export interface JwtPayload {
     sub: string;
     email: string;
     role: string;
@@ -34,15 +34,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         super(opts);
     }
 
-    validate(payload: JwtPayload): {
-        userId: string;
-        email: string;
-        role: string;
-    } {
-        return {
-            userId: payload.sub,
-            email: payload.email,
-            role: payload.role,
-        };
+    validate(payload: JwtPayload): JwtPayload {
+        return payload;
     }
 }

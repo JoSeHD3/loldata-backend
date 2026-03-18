@@ -10,6 +10,7 @@ import { AnalysisService } from './analysis/analysis.service';
 import { UsersModule } from './users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
+import { RiotAccountModule } from './riot-account/riot-account.module';
 
 @Module({
     imports: [
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
             }),
             inject: [ConfigService],
         }),
+        RiotAccountModule,
     ],
     controllers: [PlayerController, MatchController, AnalysisController],
     providers: [PlayerService, MatchService, AnalysisService],
